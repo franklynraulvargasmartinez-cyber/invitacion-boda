@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naomi & Raúl</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&family=Pinyon+Script&family=Forum&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+:root {
+    --verdun: #3E460A;
+    --fiji: #606B1B;
+    --citron: #8E9E28;
+    --olive: #AFB757;
+    --deco: #D2CF7F;
+    --bg: #fdfdf5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- CORRECCIÓN EN EL BODY: Foto de fondo estática corregida --- */
+body {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--verdun);
+    overflow-x: hidden;
+    position: relative;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.40)), 
+        url('https://i.ibb.co/MJ8zCk2/Background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+}
+
+/* --- EFECTO DE APERTURA ELEGANTE --- */
+#envelopeScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #ffffff, #fdfdf5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    cursor: pointer;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+}
+
+.envelope-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('https://i.ibb.co/k6BQZzPD/sobreboda2026.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease;
+}
+
+.envelope-wrapper.open {
+    transform: translateY(100vh);
+    opacity: 0;
+}
+
+main {
+    max-width: 850px;
+    margin: auto;
+    padding: 70px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.2s ease;
+}
+
+main.reveal {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.hint-text {
+    position: absolute;
+    bottom: 45px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--verdun);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+/* --- BOTÓN FLOTANTE PARA PAUSAR/REPRODUCIR MÚSICA --- */
+.music-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--olive);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.music-control.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.music-control:hover {
+    transform: scale(1.05);
+}
+
+.music-control svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--fiji);
+}
+
+.church-icon {
+    width: 75px;
+    height: auto;
+    margin: 20px auto 5px auto;
+    fill: none;
+    stroke: var(--fiji);
+    stroke-width: 1.2;
+    display: block;
+}
+
+.toast-icon {
+    width: 65px;
+    height: auto;
+    margin: 35px auto 5px auto;
+    fill: none;
+    stroke: var(--fiji);
+    stroke-width: 1.2;
+    display: block;
+}
+
+.map-icon {
+    width: 14px;
+    height: auto;
+    fill: none;
+    stroke: var(--fiji);
+    stroke-width: 1.5;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+/* --- CORRECCIÓN EN EL MARCO: Fondo blanco suave para que las letras se lean sobre la foto --- */
+.frame {
+    border: 3px solid var(--olive);
+    padding: 50px 30px;
+    background: rgba(255, 255, 255, 0.94); 
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+h1 {
+    font-family: 'Pinyon Script', cursive; /* o Pinyon Script si prefieres */
+    font-size: clamp(52px, 11vw, 90px);
+    color: var(--fiji);
+    font-weight: normal;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 20px;
+    white-space: nowrap;
+}
+
+h1 .amp {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.6em;
+    vertical-align: middle;
+    margin: 0 8px;
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.8;
+    margin: 6px 0;
+}
+
+.blessing {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--fiji);
+    margin-bottom: 25px;
+}
+
+.date {
+    display: inline-block;
+    padding: 10px 40px;
+    margin-top: 45px;
+    margin-bottom: 35px;
+    font-family: serif;
+    letter-spacing: 3px;
+    font-weight: 500;
+    color: #3f4f3a;
+    position: relative;
+    font-size: 38px;
+    white-space: nowrap;
+}
+
+.date::before,
+.date::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background-color: #556b2f;
+}
+
+.date::before { top: 0; }
+.date::after { bottom: 0; }
+
+.script-title {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 45px;
+    color: var(--fiji);
+    font-weight: 400;
+    margin-top: 15px;
+    text-transform: none;
+}
+
+.edit {
+    border-bottom: 2px dashed var(--fiji);
+    padding: 3px 6px;
+    font-weight: 600;
+    color: var(--fiji);
+}
+
+/* --- LÍNEA DIVISORA CORTA Y LISA PARA SEPARAR SECCIONES --- */
+.divider {
+    width: 50px;
+    height: 1px;
+    background-color: var(--olive);
+    border: none;
+    margin: 25px auto;
+}
+
+.countdown-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 15px auto 25px auto;
+    max-width: 320px;
+}
+
+.countdown-box {
+    background: transparent;
+    border: 1px solid rgba(60, 70, 10, 0.4);
+    border-radius: 8px;
+    padding: 8px 0;
+    width: 68px;
+}
+
+.countdown-number {
+    font-family: 'Forum', serif;
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--fiji);
+    display: block;
+}
+
+.countdown-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--verdun);
+    display: block;
+    margin-top: 2px;
+}
+
+.bttn-container {
+    margin: 20px 0;
+}
+
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.ok { background: var(--fiji); color: white; }
+.no { background: var(--citron); color: white; }
+
+#msg {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--verdun);
+    margin-top: 15px;
+}
+
+#qrcode img {
+    display: block;
+}
+
+/* Estilos para la nueva foto principal */
+.foto-principal-wrapper {
+    width: 100%;
+    max-width: 420px;
+    margin: 15px auto 30px;
+    padding: 0 10px;
+}
+.foto-principal {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(112, 123, 43, 0.2);
+}
+
+@media (max-width: 600px) {
+    .date {
+        font-size: 24px;
+        padding: 8px 15px;
+        letter-spacing: 1.5px;
+        margin-top: 35px;
+    }
+    
+
+        font-size: 62px;
+    }
+    .frame {
+        padding: 35px 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ELEMENTO DE AUDIO -->
+<audio id="bgMusic" loop>
+    <source src="https://storage.filebin.net/filebin/26dfd2fa002cc17e8360eb657621c3c212c573a0583ea8fc8510236316c05425?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=GK352fd2505074fc9dde7fd2cb%2F20260627%2Fhel1-dc4%2Fs3%2Faws4_request&X-Amz-Date=20260627T185315Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&response-cache-control=max-age%3D900&response-content-disposition=inline%3B%20filename%3D%22musica-Mendelssohn-Marcha-nupcial.mp3%22&response-content-type=audio%2Fmpeg&x-id=GetObject&X-Amz-Signature=d72320590229967a32faaf8ba234110f3d22bd2e2dae62404863342988a15345" type="audio/mpeg">
+    Tu navegador no soporta audio en línea.
+</audio>
+
+<!-- BOTÓN DE MÚSICA FLOTANTE -->
+<div id="musicBtn" class="music-control" onclick="toggleMusic()">
+    <svg id="musicIcon" viewBox="0 0 24 24">
+        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+    </svg>
+</div>
+
+<div id="envelopeScreen" onclick="openInvite()">
+    <div class="envelope-wrapper" id="wrapper">
+        <div class="hint-text">Toca para abrir</div>
+    </div>
+</div>
+
+<main id="mainContent">
+<div class="frame">
+
+<h1>Naomi <span class="amp">&amp;</span> Raúl</h1>
+
+
+<!-- FOTO PRINCIPAL JUSTO DEBAJO DE LOS NOMBRES -->
+<div class="foto-principal-wrapper">
+    <img src="https://i.ibb.co/2YtPPNVm/rn2.jpg" alt="Naomi & Franklyn" class="foto-principal">
+</div>
+
+<!-- LUEGO EL MENSAJE DE LA BENDICIÓN -->
+<p class="blessing">
+Con la bendición de Dios y el amor de nuestros padres, tenemos el honor de invitarles a nuestra unión en matrimonio.
+</p>
+
+<!-- Y LUEGO LA FECHA -->
+<h2 class="date">SÁBADO 10 · 10 · 2026</h2>
+
+<hr class="divider">
+
+<!-- CEREMONIA RELIGIOSA -->
+<svg class="church-icon" viewBox="0 0 64 64">
+    <path d="M 12,48 Q 16,36 20,40 M 14,44 Q 18,32 18,36" stroke="var(--fiji)" stroke-width="1"/>
+    <path d="M 52,48 Q 48,36 44,40 M 50,44 Q 46,32 46,36" stroke="var(--fiji)" stroke-width="1"/>
+    <path d="M 24,52 L 24,32 L 32,22 L 40,32 L 40,52 Z" />
+    <path d="M 28,52 L 28,42 Q 32,38 36,42 L 36,52" />
+    <circle cx="32" cy="30" r="3" />
+    <path d="M 32,22 L 32,14 M 29,17 L 35,17" />
+</svg>
+
+<h2 class="script-title" style="margin-top: 5px;">Ceremonia Religiosa</h2>
+<p style="color: var(--fiji); font-weight: 500;">Iglesia Sagrado Corazón de Jesús, Moca</p>
+<p style="font-family: 'Forum', serif; font-size: 24px; font-weight: bold; color: var(--fiji); margin-top: 5px;">4:30 PM</p>
+<p style="margin-top: 5px;">
+    <a href="https://maps.google.com/?q=Iglesia+Sagrado+Corazón+de+Jesús+Moca" target="_blank" style="font-weight:bold;color:var(--fiji);text-decoration:none; font-family: 'Montserrat', sans-serif; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
+        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Ver ubicación
+    </a>
+</p>
+
+<hr class="divider">
+
+<!-- RECEPCIÓN -->
+<svg class="toast-icon" viewBox="0 0 64 64">
+    <path d="M 26,45 L 26,54 M 20,54 L 32,54" />
+    <path d="M 26,45 Q 16,35 18,18 L 34,18 Q 36,35 26,45 Z" />
+    <path d="M 38,45 L 38,54 M 32,54 L 44,54" />
+    <path d="M 38,45 Q 48,35 46,18 L 30,18 Q 28,35 38,45 Z" />
+    <path d="M 23,26 L 29,26 M 35,26 L 41,26" opacity="0.6"/>
+</svg>
+
+<h2 class="script-title" style="margin-top: 5px;">Recepción</h2>
+<p style="color: var(--fiji); font-weight: 500;">Residencia Camacho Polanco, Juan López.</p>
+<p style="font-family: 'Forum', serif; font-size: 24px; font-weight: bold; color: var(--fiji); margin-top: 5px;">6:30 PM</p>
+<p style="margin-top: 5px;">
+    <a href="https://maps.app.goo.gl/SAdXmbzUvpXvMYSJ7" target="_blank" style="font-weight:bold;color:var(--fiji);text-decoration:none; font-family: 'Montserrat', sans-serif; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
+        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Ver ubicación
+    </a>
+</p>
+
+<hr class="divider">
+
+<p style="font-style: italic; color: var(--verdun); margin: 20px 0; max-width: 500px; margin-left: auto; margin-right: auto;">
+    Un evento para adultos está en camino, así que prepárense para una noche llena de diversión.
+</p>
+
+<hr class="divider">
+
+<h2 class="script-title">Invitación especial:</h2>
+<p><span class="edit" id="nombre"></span></p>
+
+<p style="margin-top: 15px; color: var(--fiji);">Pase válido para:</p>
+<p><span class="edit"><span id="pases"></span> persona(s)</span></p>
+
+<p style="margin-top: 20px; font-family: 'Montserrat', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: bold; color: var(--verdun);">
+    Código de vestimenta: Formal
+</p>
+
+<hr class="divider">
+
+<h2 class="script-title">
+  <span style="font-family:'Great Vibes', cursive; font-size:1.05em;">S</span>ugerencia de Regalos
+</h2>
+
+<p style="color: var(--fiji);">Tu presencia es nuestro mejor regalo. Sin embargo, si deseas tener un detalle con nosotros, puedes hacerlo a través de nuestra lista de regalos o mediante una contribución a esta cuenta:</p>
+
+<p style="margin-top: 15px; color: var(--fiji);"><b>Banco BHD</b></p>
+<p style="color: var(--fiji);">Cuenta de Ahorros: <b>37905510015</b></p>
+<p style="color: var(--fiji);">A nombre de: <b>Naomi Collado & Franklyn Vargas</b></p>
+<p style="color: var(--fiji);">Número de cédula: <b>402-3429073-8</b></p>
+
+<p style="margin-top: 15px;">Lista de regalos</p>
+<div id="qrcode" style="margin:20px auto; display:flex; justify-content:center;"></div>
+
+<a href="https://casacuesta.com/" target="_blank" style="display:inline-block;margin-bottom:20px;font-weight:bold;color:var(--fiji);text-decoration:none;">
+Ver aquí
+</a>
+
+<hr class="divider">
+
+<p style="margin: 25px 0; font-style: italic;">“Más valen dos que uno, porque si uno cae, el otro lo levanta.” — Ecclesiastés 4:9-10</p>
+
+<hr class="divider">
+
+<p style="font-family: 'Montserrat', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--verdun); margin-bottom: 10px; font-weight: 500;">
+    Solo faltan:
+</p>
+
+<div class="countdown-container">
+    <div class="countdown-box">
+        <span class="countdown-number" id="first-box-number">00</span>
+        <span class="countdown-label" id="first-box-label">Meses</span>
+    </div>
+    <div class="countdown-box">
+        <span class="countdown-number" id="hours">00</span>
+        <span class="countdown-label">Horas</span>
+    </div>
+    <div class="countdown-box">
+        <span class="countdown-number" id="minutes">00</span>
+        <span class="countdown-label">Min</span>
+    </div>
+    <div class="countdown-box">
+        <span class="countdown-number" id="seconds">00</span>
+        <span class="countdown-label">Seg</span>
+    </div>
+</div>
+
+<hr class="divider">
+
+<h2>Confirmar Asistencia</h2>
+<p>Agradecemos confirmar su asistencia antes del 20 de septiembre</p>
+
+<div id="blockBotones" class="bttn-container">
+    <button class="ok" onclick="send('Confirmó')">Confirmar Asistencia</button>
+    <button class="no" onclick="send('No asistirá')">No podré asistir</button>
+</div>
+
+<p id="msg"></p>
+
+<p style="margin-top:25px; font-family: 'Pinyon Script', cursive; font-size: 38px; color: var(--fiji);">¡Te esperamos!</p>
+
+</div>
+</main>
+
+<script>
+const INVITADO="NOMBRE DEL INVITADO"; 
+const PASES=0;
+const ENDPOINT="https://script.google.com/macros/s/AKfycbxCo-fowoCLWDagfwv4fxDe2VKjGDliEy-Z1VaOW-RXpyNDesfXeuBRxdiILZX_kG2BaA/exec";
+
+document.getElementById("nombre").innerText=INVITADO;
+document.getElementById("pases").innerText=PASES;
+
+window.addEventListener('load', function() {
+    new QRCode(document.getElementById("qrcode"), {
+        text: "https://casacuesta.com/",
+        width: 158,
+        height: 158,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+
+    const votoGuardado = localStorage.getItem("voto_boda_" + INVITADO.replace(/\s+/g, '_'));
+    if (votoGuardado) {
+        document.getElementById("blockBotones").style.display = "none";
+        document.getElementById("msg").innerText = `Ya registramos tu respuesta: ${votoGuardado} ❤️`;
+    }
+
+    initCountdown();
+});
+
+function initCountdown() {
+    const targetDate = new Date("Oct 10, 2026 16:30:00");
+    const labels = document.querySelectorAll(".countdown-label");
+    const numbers = document.querySelectorAll(".countdown-number");
+
+    function updateCountdown() {
+        const now = new Date();
+        const difference = targetDate.getTime() - now.getTime();
+
+        if (difference < 0) {
+            document.querySelector(".countdown-container").innerHTML = "<p style='font-family:\"Forum\"; color:var(--fiji); font-size:20px;'>¡Llegó el gran día! 🥂</p>";
+            clearInterval(intervalId);
+            return;
+        }
+
+        let months = (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth());
+        let tempDate = new Date(now.getTime());
+        tempDate.setMonth(tempDate.getMonth() + months);
+        
+        if (tempDate > targetDate) {
+            months--;
+            tempDate = new Date(now.getTime());
+            tempDate.setMonth(tempDate.getMonth() + months);
+        }
+
+        const totalDays = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        if (months <= 0) {
+            labels[0].innerText = "Días";
+            labels[1].innerText = "Horas";
+            labels[2].innerText = "Min";
+            labels[3].innerText = "Seg";
+
+            numbers[0].innerText = totalDays < 10 ? "0" + totalDays : totalDays;
+            numbers[1].innerText = hours < 10 ? "0" + hours : hours;
+            numbers[2].innerText = minutes < 10 ? "0" + minutes : minutes;
+            numbers[3].innerText = seconds < 10 ? "0" + seconds : seconds;
+        } else {
+            labels[0].innerText = "Meses";
+            labels[1].innerText = "Días";
+            labels[2].innerText = "Horas";
+            labels[3].innerText = "Min";
+
+            const daysInMonth = Math.floor((difference - (months * 30.436875 * 24 * 60 * 60 * 1000)) / (1000 * 60 * 60 * 24));
+            let adjustedDays = daysInMonth < 0 ? 0 : daysInMonth;
+
+            numbers[0].innerText = months < 10 ? "0" + months : months;
+            numbers[1].innerText = adjustedDays < 10 ? "0" + adjustedDays : adjustedDays;
+            numbers[2].innerText = hours < 10 ? "0" + hours : hours;
+            numbers[3].innerText = minutes < 10 ? "0" + minutes : minutes;
+        }
+    }
+
+    updateCountdown();
+    const intervalId = setInterval(updateCountdown, 1000);
+}
+
+function openInvite(){
+    const wrapper = document.getElementById("wrapper");
+    const screen = document.getElementById("envelopeScreen");
+    const mainContent = document.getElementById("mainContent");
+    const music = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");
+    
+    wrapper.classList.add("open"); 
+    mainContent.classList.add("reveal");
+    
+    music.play().then(() => {
+        musicBtn.classList.add("show");
+    }).catch(error => {
+        console.log("Control manual requerido.");
+        musicBtn.classList.add("show");
+    });
+    
+    setTimeout(() => {
+        screen.style.opacity = "0";
+        setTimeout(() => {
+            screen.style.display = "none";
+        }, 800);
+    }, 400); 
+}
+
+function toggleMusic() {
+    const music = document.getElementById("bgMusic");
+    const icon = document.getElementById("musicIcon");
+    
+    if (music.paused) {
+        music.play();
+        icon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+    } else {
+        music.pause();
+        icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+    }
+}
+
+function send(state){
+    document.getElementById("blockBotones").style.display = "none";
+    document.getElementById("msg").innerText = "Enviando respuesta... ⏳";
+
+    fetch(ENDPOINT,{
+        method:"POST",
+        headers:{"Content-Type":"application/x-www-form-urlencoded"},
+        body:`nombre=${INVITADO}&asistencia=${state}&pases=${PASES}&mensaje=`
+    })
+    .then(()=> {
+        localStorage.setItem("voto_boda_" + INVITADO.replace(/\s+/g, '_'), state);
+        document.getElementById("msg").innerText = `¡Respuesta enviada con éxito! (${state}) ❤️`;
+    })
+    .catch(()=>{
+        document.getElementById("msg").innerText = "Hubo un error de conexión. Inténtalo de nuevo.";
+        document.getElementById("blockBotones").style.display = "block"; 
+    });
+}
+</script>
+
+</body>
+</html>
