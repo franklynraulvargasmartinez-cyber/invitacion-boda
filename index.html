@@ -622,17 +622,31 @@ function openInvite(){
     const mainContent = document.getElementById("mainContent");
     const music = document.getElementById("bgMusic");
     const musicBtn = document.getElementById("musicBtn");
-    
+
     wrapper.classList.add("open"); 
     mainContent.classList.add("reveal");
-    
-    music.play().then(() => {
-        musicBtn.classList.add("show");
-    }).catch(error => {
-        console.log("Control manual requerido.");
-        musicBtn.classList.add("show");
-    });
-    
+
+    // 🔊 FORZAR AUDIO
+    music.currentTime = 0;
+    music.volume = 1;
+    music.muted = false;
+
+    const playPromise = music.play();
+
+    if (playPromise !== undefined) {
+        playPromise
+        .then(() => {
+            musicBtn.classList.add("show");
+        })
+        .catch(() => {
+            document.body.addEventListener("click", () => {
+                music.play();
+            }, { once: true });
+
+            musicBtn.classList.add("show");
+        });
+    }
+
     setTimeout(() => {
         screen.style.opacity = "0";
         setTimeout(() => {
