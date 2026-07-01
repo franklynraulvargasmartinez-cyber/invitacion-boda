@@ -672,7 +672,6 @@ function toggleMusic() {
 function send(state){
     document.getElementById("blockBotones").style.display = "none";
     document.getElementById("msg").innerText = "Enviando respuesta... ⏳";
-
     fetch(ENDPOINT,{
         method:"POST",
         headers:{"Content-Type":"application/x-www-form-urlencoded"},
@@ -687,7 +686,21 @@ function send(state){
         document.getElementById("blockBotones").style.display = "block"; 
     });
 }
-</script>
 
+function ajustarTituloH1() {
+    const h1 = document.querySelector('h1');
+    const contenedor = h1.parentElement;
+    let fontSize = 90;
+    h1.style.fontSize = fontSize + "px";
+    const anchoDisponible = contenedor.clientWidth - 40;
+    while (h1.scrollWidth > anchoDisponible && fontSize > 20) {
+        fontSize -= 1;
+        h1.style.fontSize = fontSize + "px";
+    }
+}
+
+window.addEventListener('load', ajustarTituloH1);
+window.addEventListener('resize', ajustarTituloH1);
+</script>
 </body>
 </html>
