@@ -530,10 +530,11 @@ Ver aquí
 </main>
 
 <script>
-const INVITADO="NOMBRE DEL INVITADO"; 
-const PASES=0;
+const params = new URLSearchParams(window.location.search);
+const INVITADO = params.get("nombre") || "Invitado";
+const PASES = params.get("pases") || "1";
 const ENDPOINT="https://script.google.com/macros/s/AKfycbxCo-fowoCLWDagfwv4fxDe2VKjGDliEy-Z1VaOW-RXpyNDesfXeuBRxdiILZX_kG2BaA/exec";
-
+    
 document.getElementById("nombre").innerText=INVITADO;
 document.getElementById("pases").innerText=PASES;
 
