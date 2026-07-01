@@ -1,17 +1,4 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=invitación.html">
-<title>Redirigiendo...</title>
-</head>
-<body>
-Si no redirige automáticamente,
-<a href="invitación.html">haz clic aquí</a>.
-</body>
-</html>
-
-<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -273,6 +260,15 @@ p {
     color: var(--fiji);
 }
 
+/* --- LÍNEA DIVISORA CORTA Y LISA PARA SEPARAR SECCIONES --- */
+.divider {
+    width: 50px;
+    height: 1px;
+    background-color: var(--olive);
+    border: none;
+    margin: 25px auto;
+}
+
 .countdown-container {
     display: flex;
     justify-content: center;
@@ -349,13 +345,6 @@ button {
     border: 1px solid rgba(112, 123, 43, 0.2);
 }
 
-.section-divider{
-    width:40%;
-    height:1px;
-    background:rgba(96,107,27,.25);
-    margin:35px auto;
-}
-
 @media (max-width: 600px) {
     .date {
         font-size: 24px;
@@ -376,8 +365,9 @@ button {
 
 <body>
 
+<!-- ELEMENTO DE AUDIO -->
 <audio id="bgMusic" loop>
-    <source src="https://archive.org/embed/SoftPianoMusicSleepingMusic" type="audio/mpeg">
+    <source src="https://storage.filebin.net/filebin/26dfd2fa002cc17e8360eb657621c3c212c573a0583ea8fc8510236316c05425?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=GK352fd2505074fc9dde7fd2cb%2F20260627%2Fhel1-dc4%2Fs3%2Faws4_request&X-Amz-Date=20260627T185315Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&response-cache-control=max-age%3D900&response-content-disposition=inline%3B%20filename%3D%22musica-Mendelssohn-Marcha-nupcial.mp3%22&response-content-type=audio%2Fmpeg&x-id=GetObject&X-Amz-Signature=d72320590229967a32faaf8ba234110f3d22bd2e2dae62404863342988a15345" type="audio/mpeg">
     Tu navegador no soporta audio en línea.
 </audio>
 
@@ -413,6 +403,8 @@ Con la bendición de Dios y el amor de nuestros padres, tenemos el honor de invi
 <!-- Y LUEGO LA FECHA -->
 <h2 class="date">SÁBADO 10 · 10 · 2026</h2>
 
+<hr class="divider">
+
 <!-- CEREMONIA RELIGIOSA -->
 <svg class="church-icon" viewBox="0 0 64 64">
     <path d="M 12,48 Q 16,36 20,40 M 14,44 Q 18,32 18,36" stroke="var(--fiji)" stroke-width="1"/>
@@ -431,7 +423,9 @@ Con la bendición de Dios y el amor de nuestros padres, tenemos el honor de invi
         <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Ver ubicación
     </a>
 </p>
-<div class="section-divider"></div>
+
+<hr class="divider">
+
 <!-- RECEPCIÓN -->
 <svg class="toast-icon" viewBox="0 0 64 64">
     <path d="M 26,45 L 26,54 M 20,54 L 32,54" />
@@ -439,7 +433,7 @@ Con la bendición de Dios y el amor de nuestros padres, tenemos el honor de invi
     <path d="M 38,45 L 38,54 M 32,54 L 44,54" />
     <path d="M 38,45 Q 48,35 46,18 L 30,18 Q 28,35 38,45 Z" />
     <path d="M 23,26 L 29,26 M 35,26 L 41,26" opacity="0.6"/>
-</</svg>
+</svg>
 
 <h2 class="script-title" style="margin-top: 5px;">Recepción</h2>
 <p style="color: var(--fiji); font-weight: 500;">Residencia Camacho Polanco, Juan López.</p>
@@ -449,27 +443,31 @@ Con la bendición de Dios y el amor de nuestros padres, tenemos el honor de invi
         <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Ver ubicación
     </a>
 </p>
-<div class="section-divider"></div>
+
+<hr class="divider">
 
 <p style="font-style: italic; color: var(--verdun); margin: 20px 0; max-width: 500px; margin-left: auto; margin-right: auto;">
     Un evento para adultos está en camino, así que prepárense para una noche llena de diversión.
 </p>
 
-<hr style="border: 0; border-top: 1px solid rgba(60,70,10,0.3); margin: 20px 0;">
-    
-<p style="margin-top: 15px; color: var(--fiji);">Pase válido para:</p>
-<p style="margin-bottom:10px;"><span class="edit"><span id="pases"></span> persona(s)</span></p>
+<hr class="divider">
 
+<h2 class="script-title">Invitación especial:</h2>
+<p><span class="edit" id="nombre"></span></p>
+
+<p style="margin-top: 15px; color: var(--fiji);">Pase válido para:</p>
+<p><span class="edit"><span id="pases"></span> persona(s)</span></p>
 
 <p style="margin-top: 20px; font-family: 'Montserrat', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: bold; color: var(--verdun);">
     Código de vestimenta: Formal
 </p>
 
-<hr style="border: 0; border-top: 1px solid rgba(60,70,10,0.3); margin: 20px 0;">
+<hr class="divider">
 
 <h2 class="script-title">
   <span style="font-family:'Great Vibes', cursive; font-size:1.05em;">S</span>ugerencia de Regalos
 </h2>
+
 <p style="color: var(--fiji);">Tu presencia es nuestro mejor regalo. Sin embargo, si deseas tener un detalle con nosotros, puedes hacerlo a través de nuestra lista de regalos o mediante una contribución a esta cuenta:</p>
 
 <p style="margin-top: 15px; color: var(--fiji);"><b>Banco BHD</b></p>
@@ -477,14 +475,18 @@ Con la bendición de Dios y el amor de nuestros padres, tenemos el honor de invi
 <p style="color: var(--fiji);">A nombre de: <b>Naomi Collado & Franklyn Vargas</b></p>
 <p style="color: var(--fiji);">Número de cédula: <b>402-3429073-8</b></p>
 
-<p style="margin-top: 15px;">Lista de regalos de casa Cuesta:</p>
+<p style="margin-top: 15px;">Lista de regalos</p>
 <div id="qrcode" style="margin:20px auto; display:flex; justify-content:center;"></div>
 
 <a href="https://casacuesta.com/" target="_blank" style="display:inline-block;margin-bottom:20px;font-weight:bold;color:var(--fiji);text-decoration:none;">
 Ver aquí
 </a>
-<div class="section-divider"></div>
+
+<hr class="divider">
+
 <p style="margin: 25px 0; font-style: italic;">“Más valen dos que uno, porque si uno cae, el otro lo levanta.” — Ecclesiastés 4:9-10</p>
+
+<hr class="divider">
 
 <p style="font-family: 'Montserrat', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--verdun); margin-bottom: 10px; font-weight: 500;">
     Solo faltan:
@@ -508,9 +510,11 @@ Ver aquí
         <span class="countdown-label">Seg</span>
     </div>
 </div>
-<div class="section-divider"></div>
+
+<hr class="divider">
+
 <h2>Confirmar Asistencia</h2>
-<p>Agradecemos confirmar su asistencia antes del 20 de septiembre.</p>
+<p>Agradecemos confirmar su asistencia antes del 20 de septiembre</p>
 
 <div id="blockBotones" class="bttn-container">
     <button class="ok" onclick="send('Confirmó')">Confirmar Asistencia</button>
