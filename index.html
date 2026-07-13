@@ -483,15 +483,56 @@ Con la bendición de Dios y el amor de nuestros padres, tenemos el honor de invi
 Ver aquí
 </a>
 
+<!-- Lista de regalos de Almacenes Ochoa -->
+<p style="margin-top: 15px;">Lista de regalos de Almacenes Ochoa:</p>
+<div id="qrcode-ochoa" style="margin:20px auto; display:flex; justify-content:center;"></div>
+
+<a href="https://micuenta.ochoa.com.do/lista-bodas/listas/54a069cf0591193-raul-vargas-naomi-collado" target="_blank" style="display:inline-block;margin-bottom:20px;font-weight:bold;color:var(--fiji);text-decoration:none;">
+Ver aquí
+</a>
+
 <hr class="divider">
 
 <p style="margin: 25px 0; font-style: italic;">“Más valen dos que uno, porque si uno cae, el otro lo levanta.” — Ecclesiastés 4:9-10</p>
 
 <hr class="divider">
 
+<!-- Sección de Cuenta Regresiva -->
 <p style="font-family: 'Montserrat', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--verdun); margin-bottom: 10px; font-weight: 500;">
     Solo faltan:
 </p>
+<!-- Contenedor donde se mostrarán los días -->
+<div id="contador-boda" style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: bold; color: var(--fiji); margin-bottom: 20px;"></div>
+
+<!-- Script para los Códigos QR y la Cuenta Regresiva -->
+<script>
+  // 1. GENERAR CÓDIGOS QR
+  if (typeof QRCode !== 'undefined') {
+    new QRCode(document.getElementById("qrcode"), "https://listaderegalos.casacuesta.com/Event/Naomi-Raul?utm_source=share");
+    new QRCode(document.getElementById("qrcode-ochoa"), "https://micuenta.ochoa.com.do/lista-bodas/listas/54a069cf0591193-raul-vargas-naomi-collado");
+  }
+
+  // 2. LOGICA DE LA CUENTA REGRESIVA
+  // CAMBIA ESTA FECHA por el día exacto de tu boda (Formato: Año-Mes-Día)
+  const fechaBoda = new Date("2026-12-31T00:00:00").getTime(); 
+
+  const x = setInterval(function() {
+    const ahora = new Date().getTime();
+    const distancia = fechaBoda - ahora;
+
+    // Cálculo de días, horas, minutos
+    const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+    // Mostrar el resultado en el div "contador-boda"
+    if (distancia > 0) {
+      document.getElementById("contador-boda").innerHTML = dias + " días y " + horas + " horas";
+    } else {
+      clearInterval(x);
+      document.getElementById("contador-boda").innerHTML = "¡LLEGÓ EL GRAN DÍA!";
+    }
+  }, 1000);
+</script>
 
 <div class="countdown-container">
     <div class="countdown-box">
