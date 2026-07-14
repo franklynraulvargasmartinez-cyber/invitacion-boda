@@ -366,6 +366,163 @@ button {
     border: 1px solid rgba(112, 123, 43, 0.2);
 }
 
+/* ================= SECCIÓN DE REGALOS REDISEÑADA ================= */
+.gift-intro {
+    color: var(--fiji);
+    max-width: 480px;
+    margin: 0 auto 22px;
+}
+
+.gift-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    border-bottom: 1px solid var(--deco);
+    margin: 0 auto 24px;
+    max-width: 460px;
+}
+
+.gift-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 10px 4px 12px;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--olive);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.gift-tab.active {
+    color: var(--fiji);
+    font-weight: 600;
+    border-bottom: 2px solid var(--fiji);
+}
+
+.gift-panel {
+    display: none;
+    animation: giftFade 0.3s ease;
+}
+
+.gift-panel.active {
+    display: block;
+}
+
+@keyframes giftFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+}
+
+.gift-card {
+    background: #fbfaf0;
+    border: 1px solid var(--deco);
+    border-radius: 14px;
+    padding: 26px 24px;
+    max-width: 380px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.gift-bank-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--citron);
+    margin-bottom: 16px;
+}
+
+.gift-field {
+    margin: 12px 0;
+}
+
+.gift-field .gift-label {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 3px;
+}
+
+.gift-field .gift-value {
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--fiji);
+}
+
+.gift-divider-thin {
+    height: 1px;
+    background: var(--deco);
+    margin: 16px 0;
+}
+
+.gift-copy-btn {
+    margin-top: 18px;
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--fiji);
+    border: 1px solid var(--fiji);
+    border-radius: 20px;
+    padding: 8px 22px;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.gift-copy-btn:hover {
+    background: var(--fiji);
+    color: white;
+}
+
+.gift-copy-btn.copied {
+    background: var(--fiji);
+    color: white;
+    border-color: var(--fiji);
+}
+
+.gift-qr-wrap {
+    text-align: center;
+    padding-top: 4px;
+}
+
+.gift-qr-label {
+    font-size: 19px;
+    color: var(--fiji);
+    margin-bottom: 16px;
+}
+
+.gift-qr-box {
+    margin: 0 auto 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.gift-view-link {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--fiji);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid var(--fiji);
+    padding-bottom: 2px;
+}
+
 @media (max-width: 600px) {
     .date {
         font-size: 24px;
@@ -490,27 +647,117 @@ Con la bendición de Dios y el amor de nuestros padres, tenemos el honor de invi
   <span style="font-family:'Great Vibes', cursive; font-size:1.05em;">S</span>ugerencia de Regalos
 </h2>
 
-<p style="color: var(--fiji);">Tu presencia es nuestro mejor regalo. Sin embargo, si deseas tener un detalle con nosotros, puedes hacerlo a través de nuestra lista de regalos o mediante una contribución a esta cuenta:</p>
+<p class="gift-intro">Su presencia en nuestro gran día es el regalo más valioso que podemos recibir.<br><br>Si además desean tener un detalle con nosotros, hemos preparado algunas opciones que nos serán de mucha ayuda en esta nueva etapa.</p>
 
-<p style="margin-top: 15px; color: var(--fiji);"><b>Banco BHD</b></p>
-<p style="color: var(--fiji);">Cuenta de Ahorros: <b>37905510015</b></p>
-<p style="color: var(--fiji);">A nombre de: <b>Naomi Collado & Franklyn Vargas</b></p>
-<p style="color: var(--fiji);">Número de cédula: <b>402-3429073-8</b></p>
+<div class="gift-tabs">
+    <button class="gift-tab active" data-gift-tab="transferencia" onclick="showGiftTab('transferencia', this)">Transferencia</button>
+    <button class="gift-tab" data-gift-tab="cuesta" onclick="showGiftTab('cuesta', this)">Casa Cuesta</button>
+    <button class="gift-tab" data-gift-tab="ochoa" onclick="showGiftTab('ochoa', this)">Ochoa</button>
+</div>
 
-<p style="margin-top: 15px;">Lista de regalos de Casa cuesta:</p>
-<div id="qrcode" style="margin:20px auto; display:flex; justify-content:center;"></div>
+<!-- PANEL: TRANSFERENCIA BANCARIA -->
+<div class="gift-panel active" id="gift-transferencia">
+    <div class="gift-card">
+        <div class="gift-bank-name">Banco BHD</div>
+        <div class="gift-field">
+            <span class="gift-label">Cuenta de Ahorros</span>
+            <span class="gift-value">37905510015</span>
+        </div>
+        <div class="gift-divider-thin"></div>
+        <div class="gift-field">
+            <span class="gift-label">A nombre de</span>
+            <span class="gift-value" style="font-size:17px;">Naomi Collado &amp; Franklyn Vargas</span>
+        </div>
+        <div class="gift-divider-thin"></div>
+        <div class="gift-field">
+            <span class="gift-label">Número de cédula</span>
+            <span class="gift-value" style="font-size:17px;">402-3429073-8</span>
+        </div>
+        <button class="gift-copy-btn" onclick="copyGiftData(this)">Copiar datos</button>
+    </div>
+</div>
 
-<a href="https://listaderegalos.casacuesta.com/Event/Naomi-Raul?utm_source=share" target="_blank" style="display:inline-block;margin-bottom:20px;font-weight:bold;color:var(--fiji);text-decoration:none;">
-Ver aquí
-</a>
+<!-- PANEL: LISTA CASA CUESTA -->
+<div class="gift-panel" id="gift-cuesta">
+    <div class="gift-qr-wrap">
+        <p class="gift-qr-label">Lista de regalos de Casa Cuesta</p>
+        <div class="gift-qr-box" id="qrcode"></div>
+        <a href="https://listaderegalos.casacuesta.com/Event/Naomi-Raul?utm_source=share" target="_blank" class="gift-view-link">Ver aquí</a>
+    </div>
+</div>
 
-<!-- Lista de regalos de Ferretera Ochoa -->
-<p style="margin-top: 15px;">Lista de regalos de Ferreteria Ochoa:</p>
-<div id="qrcode-ochoa" style="margin:20px auto; display:flex; justify-content:center;"></div>
+<!-- PANEL: LISTA FERRETERÍA OCHOA -->
+<div class="gift-panel" id="gift-ochoa">
+    <div class="gift-qr-wrap">
+        <p class="gift-qr-label">Lista de regalos de Ochoa</p>
+        <div class="gift-qr-box" id="qrcode-ochoa"></div>
+        <a href="https://micuenta.ochoa.com.do/lista-bodas/listas/54a069cf0591193-raul-vargas-naomi-collado" target="_blank" class="gift-view-link">Ver aquí</a>
+    </div>
+</div>
 
-<a href="https://micuenta.ochoa.com.do/lista-bodas/listas/54a069cf0591193-raul-vargas-naomi-collado" target="_blank" style="display:inline-block;margin-bottom:20px;font-weight:bold;color:var(--fiji);text-decoration:none;">
-Ver aquí
-</a>
+<!-- Script para los Códigos QR (una sola generación por QR, mismo tamaño) -->
+<script>
+  if (typeof QRCode !== 'undefined') {
+    new QRCode(document.getElementById("qrcode"), {
+        text: "https://listaderegalos.casacuesta.com/Event/Naomi-Raul?utm_source=share",
+        width: 130,
+        height: 130,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+    new QRCode(document.getElementById("qrcode-ochoa"), {
+        text: "https://micuenta.ochoa.com.do/lista-bodas/listas/54a069cf0591193-raul-vargas-naomi-collado",
+        width: 130,
+        height: 130,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+
+  function showGiftTab(tab, btn) {
+      document.querySelectorAll('.gift-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.gift-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('gift-' + tab).classList.add('active');
+      btn.classList.add('active');
+  }
+
+  function copyGiftData(btn) {
+      const datos = "Banco BHD\nCuenta de Ahorros: 37905510015\nA nombre de: Naomi Collado & Franklyn Vargas\nCédula: 402-3429073-8";
+      const textoOriginal = btn.innerText;
+
+      function marcarCopiado() {
+          btn.innerText = "¡Copiado! ✓";
+          btn.classList.add("copied");
+          setTimeout(() => {
+              btn.innerText = textoOriginal;
+              btn.classList.remove("copied");
+          }, 2000);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(datos).then(marcarCopiado).catch(() => {
+              fallbackCopy(datos);
+              marcarCopiado();
+          });
+      } else {
+          fallbackCopy(datos);
+          marcarCopiado();
+      }
+  }
+
+  function fallbackCopy(texto) {
+      const textarea = document.createElement("textarea");
+      textarea.value = texto;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(textarea);
+  }
+</script>
 
 <hr class="divider">
 
@@ -541,28 +788,6 @@ Ver aquí
         <span class="countdown-label">Seg</span>
     </div>
 </div>
-
-<!-- Script para los Códigos QR (una sola generación por QR, mismo tamaño) -->
-<script>
-  if (typeof QRCode !== 'undefined') {
-    new QRCode(document.getElementById("qrcode"), {
-        text: "https://listaderegalos.casacuesta.com/Event/Naomi-Raul?utm_source=share",
-        width: 158,
-        height: 158,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-    });
-    new QRCode(document.getElementById("qrcode-ochoa"), {
-        text: "https://micuenta.ochoa.com.do/lista-bodas/listas/54a069cf0591193-raul-vargas-naomi-collado",
-        width: 158,
-        height: 158,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-    });
-  }
-</script>
 
 <hr class="divider">
 
@@ -657,7 +882,6 @@ function initCountdown() {
         const pad = (n) => (n < 10 ? "0" + n : String(n));
 
         if (months >= 1) {
-            // Etapa 1: falta 1 mes o más -> Meses / Días / Horas / Min
             labels[0].innerText = "Meses";
             labels[1].innerText = "Días";
             labels[2].innerText = "Horas";
@@ -672,7 +896,6 @@ function initCountdown() {
             numbers[3].innerText = pad(minutes);
 
         } else if (totalDays >= 7) {
-            // Etapa 2: falta menos de 1 mes pero 1 semana o más -> Semanas / Días / Horas / Min
             const weeks = Math.floor(totalDays / 7);
             const remDays = totalDays % 7;
 
@@ -687,7 +910,6 @@ function initCountdown() {
             numbers[3].innerText = pad(minutes);
 
         } else {
-            // Etapa 3: falta menos de 1 semana -> Días / Horas / Min / Seg hasta 00:00:00:00
             labels[0].innerText = "Días";
             labels[1].innerText = "Horas";
             labels[2].innerText = "Min";
@@ -714,7 +936,6 @@ function openInvite(){
     wrapper.classList.add("open"); 
     mainContent.classList.add("reveal");
 
-    // 🔊 FORZAR AUDIO
     music.currentTime = 0;
     music.volume = 1;
     music.muted = false;
@@ -752,7 +973,7 @@ function toggleMusic() {
         icon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
     } else {
         music.pause();
-        icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+        icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
     }
 }
 
