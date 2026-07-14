@@ -307,6 +307,21 @@ p {
     margin: 20px 0;
 }
 
+/* --- EFECTO DE APARICIÓN AL HACER SCROLL --- */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(4px);
+    transition: opacity 1s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1), filter 1s ease;
+    will-change: opacity, transform, filter;
+}
+
+.reveal-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
 button {
     padding: 12px 20px;
     border: none;
@@ -326,8 +341,13 @@ button {
     margin-top: 15px;
 }
 
-#qrcode img {
+#qrcode img,
+#qrcode-ochoa img {
     display: block;
+    max-width: 158px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
 }
 
 /* Estilos para la nueva foto principal */
@@ -497,42 +517,10 @@ Ver aquí
 
 <hr class="divider">
 
-<!-- Sección de Cuenta Regresiva -->
+<!-- Cuenta Regresiva (única, en cajas: Meses/Semanas/Días/Horas/Min/Seg según falte) -->
 <p style="font-family: 'Montserrat', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--verdun); margin-bottom: 10px; font-weight: 500;">
     Solo faltan:
 </p>
-<!-- Contenedor donde se mostrarán los días -->
-<div id="contador-boda" style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: bold; color: var(--fiji); margin-bottom: 20px;"></div>
-
-<!-- Script para los Códigos QR y la Cuenta Regresiva -->
-<script>
-  // 1. GENERAR CÓDIGOS QR
-  if (typeof QRCode !== 'undefined') {
-    new QRCode(document.getElementById("qrcode"), "https://listaderegalos.casacuesta.com/Event/Naomi-Raul?utm_source=share");
-    new QRCode(document.getElementById("qrcode-ochoa"), "https://micuenta.ochoa.com.do/lista-bodas/listas/54a069cf0591193-raul-vargas-naomi-collado");
-  }
-
-  // 2. LOGICA DE LA CUENTA REGRESIVA
-  // CAMBIA ESTA FECHA por el día exacto de tu boda (Formato: Año-Mes-Día)
-  const fechaBoda = new Date("2026-12-31T00:00:00").getTime(); 
-
-  const x = setInterval(function() {
-    const ahora = new Date().getTime();
-    const distancia = fechaBoda - ahora;
-
-    // Cálculo de días, horas, minutos
-    const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
-    const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-    // Mostrar el resultado en el div "contador-boda"
-    if (distancia > 0) {
-      document.getElementById("contador-boda").innerHTML = dias + " días y " + horas + " horas";
-    } else {
-      clearInterval(x);
-      document.getElementById("contador-boda").innerHTML = "¡LLEGÓ EL GRAN DÍA!";
-    }
-  }, 1000);
-</script>
 
 <div class="countdown-container">
     <div class="countdown-box">
@@ -552,6 +540,28 @@ Ver aquí
         <span class="countdown-label">Seg</span>
     </div>
 </div>
+
+<!-- Script para los Códigos QR (una sola generación por QR, mismo tamaño) -->
+<script>
+  if (typeof QRCode !== 'undefined') {
+    new QRCode(document.getElementById("qrcode"), {
+        text: "https://listaderegalos.casacuesta.com/Event/Naomi-Raul?utm_source=share",
+        width: 158,
+        height: 158,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+    new QRCode(document.getElementById("qrcode-ochoa"), {
+        text: "https://micuenta.ochoa.com.do/lista-bodas/listas/54a069cf0591193-raul-vargas-naomi-collado",
+        width: 158,
+        height: 158,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+</script>
 
 <hr class="divider">
 
@@ -580,15 +590,6 @@ document.getElementById("nombre").innerText=INVITADO;
 document.getElementById("pases").innerText=PASES;
 
 window.addEventListener('load', function() {
-    new QRCode(document.getElementById("qrcode"), {
-        text: "https://casacuesta.com/",
-        width: 158,
-        height: 158,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
-
     const votoGuardado = localStorage.getItem("voto_boda_" + INVITADO.replace(/\s+/g, '_'));
     if (votoGuardado) {
         document.getElementById("blockBotones").style.display = "none";
@@ -596,19 +597,44 @@ window.addEventListener('load', function() {
     }
 
     initCountdown();
+    initScrollReveal();
 });
+
+function initScrollReveal() {
+    const items = document.querySelectorAll('.frame > *:not(hr):not(br):not(script)');
+
+    items.forEach((el, idx) => {
+        el.classList.add('reveal-on-scroll');
+        el.style.transitionDelay = ((idx % 4) * 0.08) + 's';
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    items.forEach((el) => observer.observe(el));
+}
 
 function initCountdown() {
     const targetDate = new Date("Oct 10, 2026 16:30:00");
-    const labels = document.querySelectorAll(".countdown-label");
-    const numbers = document.querySelectorAll(".countdown-number");
 
     function updateCountdown() {
+        const container = document.querySelector(".countdown-container");
+        if (!container) return;
+
+        const labels = container.querySelectorAll(".countdown-label");
+        const numbers = container.querySelectorAll(".countdown-number");
+
         const now = new Date();
         const difference = targetDate.getTime() - now.getTime();
 
-        if (difference < 0) {
-            document.querySelector(".countdown-container").innerHTML = "<p style='font-family:\"Forum\"; color:var(--fiji); font-size:20px;'>¡Llegó el gran día! 🥂</p>";
+        if (difference <= 0) {
+            container.innerHTML = "<p style='font-family:\"Forum\"; color:var(--fiji); font-size:20px;'>¡Llegó el gran día! 🥂</p>";
             clearInterval(intervalId);
             return;
         }
@@ -616,7 +642,6 @@ function initCountdown() {
         let months = (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth());
         let tempDate = new Date(now.getTime());
         tempDate.setMonth(tempDate.getMonth() + months);
-        
         if (tempDate > targetDate) {
             months--;
             tempDate = new Date(now.getTime());
@@ -628,29 +653,49 @@ function initCountdown() {
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        if (months <= 0) {
-            labels[0].innerText = "Días";
-            labels[1].innerText = "Horas";
-            labels[2].innerText = "Min";
-            labels[3].innerText = "Seg";
+        const pad = (n) => (n < 10 ? "0" + n : String(n));
 
-            numbers[0].innerText = totalDays < 10 ? "0" + totalDays : totalDays;
-            numbers[1].innerText = hours < 10 ? "0" + hours : hours;
-            numbers[2].innerText = minutes < 10 ? "0" + minutes : minutes;
-            numbers[3].innerText = seconds < 10 ? "0" + seconds : seconds;
-        } else {
+        if (months >= 1) {
+            // Etapa 1: falta 1 mes o más -> Meses / Días / Horas / Min
             labels[0].innerText = "Meses";
             labels[1].innerText = "Días";
             labels[2].innerText = "Horas";
             labels[3].innerText = "Min";
 
             const daysInMonth = Math.floor((difference - (months * 30.436875 * 24 * 60 * 60 * 1000)) / (1000 * 60 * 60 * 24));
-            let adjustedDays = daysInMonth < 0 ? 0 : daysInMonth;
+            const adjustedDays = daysInMonth < 0 ? 0 : daysInMonth;
 
-            numbers[0].innerText = months < 10 ? "0" + months : months;
-            numbers[1].innerText = adjustedDays < 10 ? "0" + adjustedDays : adjustedDays;
-            numbers[2].innerText = hours < 10 ? "0" + hours : hours;
-            numbers[3].innerText = minutes < 10 ? "0" + minutes : minutes;
+            numbers[0].innerText = pad(months);
+            numbers[1].innerText = pad(adjustedDays);
+            numbers[2].innerText = pad(hours);
+            numbers[3].innerText = pad(minutes);
+
+        } else if (totalDays >= 7) {
+            // Etapa 2: falta menos de 1 mes pero 1 semana o más -> Semanas / Días / Horas / Min
+            const weeks = Math.floor(totalDays / 7);
+            const remDays = totalDays % 7;
+
+            labels[0].innerText = "Semanas";
+            labels[1].innerText = "Días";
+            labels[2].innerText = "Horas";
+            labels[3].innerText = "Min";
+
+            numbers[0].innerText = pad(weeks);
+            numbers[1].innerText = pad(remDays);
+            numbers[2].innerText = pad(hours);
+            numbers[3].innerText = pad(minutes);
+
+        } else {
+            // Etapa 3: falta menos de 1 semana -> Días / Horas / Min / Seg hasta 00:00:00:00
+            labels[0].innerText = "Días";
+            labels[1].innerText = "Horas";
+            labels[2].innerText = "Min";
+            labels[3].innerText = "Seg";
+
+            numbers[0].innerText = pad(totalDays);
+            numbers[1].innerText = pad(hours);
+            numbers[2].innerText = pad(minutes);
+            numbers[3].innerText = pad(seconds);
         }
     }
 
